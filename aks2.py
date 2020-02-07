@@ -4,7 +4,6 @@ Successful implementation of aks primality test.
 
 from math import log, sqrt, floor
 
-primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]
 
 def aks_test(n):
     """
@@ -42,7 +41,6 @@ def ord(a, n):
     order only exists when a and n are coprime. 
     """
     k = 2
-
     while True:
         if (pow(a, k) % n) == 1:
             break
@@ -61,6 +59,7 @@ def is_perfect_power(n):
     # If n is a perfect bth power, then b <= log(n). Therefore, compute an
     # integer approximation x of n^(1/b) for every such b, starting with b = 2.
     # Only prime values of b need to be used.
+    primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]
     b = 2
     while b <= (log(n, 2) + 1):
         if b in primes:
@@ -121,7 +120,6 @@ def polyMult(a, b, r, p):
     Implements multiplication of polynomials a and b.
     """
     res = [0] * r
-
     for i, u in enumerate(a):
         for j, v in enumerate(b):
             idx = (i + j) % r
@@ -134,13 +132,10 @@ def is_congruent(a, p, r):
     """
     Tests congruence (x + a)^p mod (x^r - 1, p) == (x^p + a) mod (x^r - 1, p). 
     """
-    ans = [1]
-    poly = [a, 1]
-    n = p
-
+    x, poly, n = ([1], [a, 1], p)
     while n != 0:
         if n & 1:
-            ans = polyMult(ans, poly, r, p)
+            x = polyMult(x, poly, r, p)
         n >>= 1
         poly = polyMult(poly, poly, r, p)
 
@@ -148,7 +143,4 @@ def is_congruent(a, p, r):
     check[0] = a 
     check[p % r] = 1
 
-    return ans == check
-
-
-print(aks_test(1663))
+    return x == check
